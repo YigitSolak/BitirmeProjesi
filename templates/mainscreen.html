@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=no">
+    <title>Anasayfa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .row {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Anasayfa</a>
+</nav>
+<form class="d-flex" role="search" action="{% url 'search' %}">
+    <div class="input-group mb-3" style="margin: 10px">
+        <input type="search" class="form-control" name="search" placeholder="Ürün ara..." style="margin-right: 10px">
+        <button class="btn btn-outline-primary" type="submit">Ara...</button>
+    </div>
+</form>
+
+<form action="{% url 'main_screen' %}" method="post">
+    {% csrf_token %}
+    <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px">
+        <div class="dropdown" id="sort-dropdown" style="margin-right: 10px">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" id="sort-button">
+                Sırala
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-value="1">A'dan Z'ye sırala</a></li>
+                <li><a class="dropdown-item" href="#" data-value="2">Z'den A'ya Sırala</a></li>
+                <li><a class="dropdown-item" href="#" data-value="3">Artan Fiyata Göre Sırala</a></li>
+                <li><a class="dropdown-item" href="#" data-value="4">Azalan Fiyata Göre Sırala</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown" id="filter-dropdown" style="margin-right: 10px">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" id="filter-button">
+                Filtrele
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" data-value="1">Meyve</a></li>
+                <li><a class="dropdown-item" href="#" data-value="2">Sebze</a></li>
+                <li><a class="dropdown-item" href="#" data-value="3">İthal</a></li>
+            </ul>
+        </div>
+        <input type="hidden" id="sort-value" name="sort_value"/>
+        <input type="hidden" id="filter-value" name="filter_value"/>
+        <button class="btn btn-primary" type="submit">Uygula</button>
+    </div>
+</form>
+
+
+<div style="margin-bottom: 60px">
+    {% for data in datas %}
+        <a href="{% url 'detail' data.MAL_ADI %}">
+            <div class="card mb-3" style="max-width: 540px; height: 180px ; margin: 10px">
+                <div class="row g-0">
+                    <div class="col-md-4" style="height: 178px">
+                        <img src="/media/{{ data.MAL_ADI }}.jpg" class="img-fluid rounded-start" alt="..."
+                             onerror="this.src='/media/default.jpg'"
+                             style="height: 100%">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"> {{ data.MAL_ADI }} </h5>
+                            <p class="card-text"> {{ data.ORTALAMA_UCRET }} </p>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom">
+    <a href="{% url 'main_screen' %}">
+        <button class="btn btn-outline-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="30"
+                 fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0.708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0.708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"></path>
+            </svg>
+        </button>
+    </a>
+    <a href="{% url 'notification' %}">
+        <button class="btn btn-outline-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="30" fill="currentColor"
+                 class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5"></path>
+            </svg>
+        </button>
+    </a>
+
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const sortDropdown = document.getElementById("sort-dropdown");
+        const filterDropdown = document.getElementById("filter-dropdown");
+        const sortValueInput = document.getElementById("sort-value");
+        const filterValueInput = document.getElementById("filter-value");
+        const sortButton = document.getElementById('sort-button')
+        const filterButton = document.getElementById('filter-button')
+
+        sortDropdown.addEventListener("click", (event) => {
+            const target = event.target;
+            if (target.tagName === "A" && target.classList.contains("dropdown-item")) {
+                sortValueInput.value = target.dataset.value;
+                sortButton.textContent = target.textContent
+            }
+        });
+
+        filterDropdown.addEventListener("click", (event) => {
+            const target = event.target;
+            if (target.tagName === "A" && target.classList.contains("dropdown-item")) {
+                filterValueInput.value = target.dataset.value;
+                filterButton.textContent = target.textContent
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
